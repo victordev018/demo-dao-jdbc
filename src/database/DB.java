@@ -1,7 +1,6 @@
 package database;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
@@ -17,12 +16,12 @@ public class DB {
         try {
 
             Properties props = loadProperties();
-            String url = props.getProperty("dbrul");
+            String url = props.getProperty("dburl");
             conn = DriverManager.getConnection(url, props);
             return conn;
         }
         catch (SQLException e) {
-            throw new MySqlException(e.getMessage());
+            throw new DBException(e.getMessage());
         }
     }
 
@@ -36,7 +35,7 @@ public class DB {
             return prop;
         }
         catch (IOException e){
-            throw new MySqlException(e.getMessage());
+            throw new DBException(e.getMessage());
         }
     }
 
@@ -48,7 +47,7 @@ public class DB {
                 conn.close();
             }
             catch (SQLException e) {
-                throw new MySqlException(e.getMessage());
+                throw new DBException(e.getMessage());
             }
         }
     }
@@ -62,7 +61,7 @@ public class DB {
                 statement.close();
             }
             catch (SQLException e ){
-                throw new MySqlException(e.getMessage());
+                throw new DBException(e.getMessage());
             }
         }
     }
@@ -76,7 +75,7 @@ public class DB {
                 resultSet.close();
             }
             catch (SQLException e ){
-                throw new MySqlException(e.getMessage());
+                throw new DBException(e.getMessage());
             }
         }
     }
