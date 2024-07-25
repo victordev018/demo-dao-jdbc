@@ -123,6 +123,10 @@ public class SellerDaoJDBC implements SellerDao {
         catch (SQLException e) {
             throw new DBException(e.getMessage());
         }
+        finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(ps);
+        }
 
     }
 
