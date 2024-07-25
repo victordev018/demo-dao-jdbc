@@ -6,6 +6,7 @@ import model.dao.DepartmentDao;
 import model.entities.Department;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentDaoJDBC implements DepartmentDao {
@@ -63,7 +64,35 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public List<Department> findAll() {
-        return List.of();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+
+            ps = conn.prepareStatement(
+                    "select * from department order by name"
+            );
+
+            rs = ps.executeQuery();
+
+            List<Department> list = new ArrayList<>();
+
+            while (rs.next()) {
+
+                // added department in list
+                list.add(instantiateDepartment(rs));
+            }
+
+            return  list;
+        }
+        catch (SQLException e){
+            throw new DBException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(ps);
+            DB.closeResultSet(rs);
+        }
     }
 
     // método para instanciar um departamento a partir de um ResultSet
